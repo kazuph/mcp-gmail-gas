@@ -52,6 +52,7 @@ const GmailGetMessageSchema = z.object({
 const GmailDownloadAttachmentSchema = z.object({
   messageId: z.string().nonempty("messageId is required"),
   attachmentId: z.string().nonempty("attachmentId is required"),
+  outputFilename: z.string().optional(),
 });
 
 // MCPサーバーインスタンス作成
@@ -99,7 +100,10 @@ queryパラメータはGmailの検索クエリ形式で指定します。
 指定したmessageIdとattachmentIdで添付ファイルを取得します。
 ファイルはDownloadsフォルダに保存されます。
 attachmentIdはattachmentsの各attachmentのnameでありファイル名となることが多いです(invoice.pdfなど)。
-  引数: messageId, attachmentId
+  引数:
+    - messageId: メッセージID（必須）
+    - attachmentId: 添付ファイルID（必須）
+    - outputFilename: 保存時のファイル名（オプション）
 `,
       inputSchema: zodToJsonSchema(GmailDownloadAttachmentSchema) as ReturnType<
         typeof zodToJsonSchema
@@ -191,7 +195,10 @@ server.setRequestHandler(
           }
 
           const downloadsDir = path.join(os.homedir(), "Downloads");
-          const filePath = path.join(downloadsDir, attachment.name);
+          const filePath = path.join(
+            downloadsDir,
+            parsed.data.outputFilename || attachment.name
+          );
           const fileBuffer = Buffer.from(attachment.base64, "base64");
           fs.writeFileSync(filePath, fileBuffer);
 
