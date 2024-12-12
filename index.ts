@@ -49,22 +49,9 @@ const GmailGetMessageSchema = z.object({
   messageId: z.string().nonempty("messageId is required"),
 });
 
-const GmailMarkReadSchema = z.object({
-  messageId: z.string().nonempty("messageId is required"),
-});
-
-const GmailMarkUnreadSchema = z.object({
-  messageId: z.string().nonempty("messageId is required"),
-});
-
 const GmailDownloadAttachmentSchema = z.object({
   messageId: z.string().nonempty("messageId is required"),
   attachmentId: z.string().nonempty("attachmentId is required"),
-});
-
-const GmailMoveToLabelSchema = z.object({
-  messageId: z.string().nonempty("messageId is required"),
-  labelName: z.string().nonempty("labelName is required"),
 });
 
 // MCPサーバーインスタンス作成
@@ -107,40 +94,11 @@ queryパラメータはGmailの検索クエリ形式で指定します。
       >,
     },
     {
-      name: "gmail_mark_read",
-      description: `
-指定したmessageIdのメールを既読にします。
-  引数: messageId
-`,
-      inputSchema: zodToJsonSchema(GmailMarkReadSchema) as ReturnType<
-        typeof zodToJsonSchema
-      >,
-    },
-    {
-      name: "gmail_mark_unread",
-      description: `
-指定したmessageIdのメールを未読にします。
-  引数: messageId
-`,
-      inputSchema: zodToJsonSchema(GmailMarkUnreadSchema) as ReturnType<
-        typeof zodToJsonSchema
-      >,
-    },
-    {
-      name: "gmail_move_to_label",
-      description: `
-指定したmessageIdのメールを特定のラベルへ移動します。
-  引数: messageId, labelName
-`,
-      inputSchema: zodToJsonSchema(GmailMoveToLabelSchema) as ReturnType<
-        typeof zodToJsonSchema
-      >,
-    },
-    {
       name: "gmail_download_attachment",
       description: `
 指定したmessageIdとattachmentIdで添付ファイルを取得します。
-ファイルはBase64等で返される想定です。
+ファイルはDownloadsフォルダに保存されます。
+attachmentIdはattachmentsの各attachmentのnameでありファイル名となることが多いです(invoice.pdfなど)。
   引数: messageId, attachmentId
 `,
       inputSchema: zodToJsonSchema(GmailDownloadAttachmentSchema) as ReturnType<
@@ -208,52 +166,6 @@ server.setRequestHandler(
           }
           const data = await callGAS("getMessage", {
             messageId: parsed.data.messageId,
-          });
-          return {
-            content: [{ type: "text", text: JSON.stringify(data, null, 2) }],
-          };
-        }
-
-        case "gmail_mark_read": {
-          const parsed = GmailMarkReadSchema.safeParse(args);
-          if (!parsed.success) {
-            throw new Error(
-              `Invalid arguments for gmail_mark_read: ${parsed.error}`
-            );
-          }
-          const data = await callGAS("markRead", {
-            messageId: parsed.data.messageId,
-          });
-          return {
-            content: [{ type: "text", text: JSON.stringify(data, null, 2) }],
-          };
-        }
-
-        case "gmail_mark_unread": {
-          const parsed = GmailMarkUnreadSchema.safeParse(args);
-          if (!parsed.success) {
-            throw new Error(
-              `Invalid arguments for gmail_mark_unread: ${parsed.error}`
-            );
-          }
-          const data = await callGAS("markUnread", {
-            messageId: parsed.data.messageId,
-          });
-          return {
-            content: [{ type: "text", text: JSON.stringify(data, null, 2) }],
-          };
-        }
-
-        case "gmail_move_to_label": {
-          const parsed = GmailMoveToLabelSchema.safeParse(args);
-          if (!parsed.success) {
-            throw new Error(
-              `Invalid arguments for gmail_move_to_label: ${parsed.error}`
-            );
-          }
-          const data = await callGAS("moveToLabel", {
-            messageId: parsed.data.messageId,
-            labelName: parsed.data.labelName,
           });
           return {
             content: [{ type: "text", text: JSON.stringify(data, null, 2) }],

@@ -66,52 +66,6 @@ function doGet(e) {
         };
         break;
 
-      case 'markRead':
-        // gmail_mark_read に対応
-        if (!e.parameter.messageId) throw new Error("messageId parameter is required");
-        var msgRead = GmailApp.getMessageById(e.parameter.messageId);
-        if (!msgRead) throw new Error("Message not found for the given messageId");
-        msgRead.markRead();
-        result = {
-          status: 'ok',
-          message: 'marked as read',
-          messageId: e.parameter.messageId
-        };
-        break;
-
-      case 'markUnread':
-        // gmail_mark_unread に対応
-        if (!e.parameter.messageId) throw new Error("messageId parameter is required");
-        var msgUnread = GmailApp.getMessageById(e.parameter.messageId);
-        if (!msgUnread) throw new Error("Message not found for the given messageId");
-        msgUnread.markUnread();
-        result = {
-          status: 'ok',
-          message: 'marked as unread',
-          messageId: e.parameter.messageId
-        };
-        break;
-
-      case 'moveToLabel':
-        // gmail_move_to_label に対応
-        if (!e.parameter.messageId) throw new Error("messageId parameter is required");
-        if (!e.parameter.labelName) throw new Error("labelName parameter is required");
-        var msgLabel = GmailApp.getMessageById(e.parameter.messageId);
-        if (!msgLabel) throw new Error("Message not found for the given messageId");
-        var thread = msgLabel.getThread();
-        var label = GmailApp.getUserLabelByName(e.parameter.labelName);
-        if (!label) {
-          label = GmailApp.createLabel(e.parameter.labelName);
-        }
-        thread.addLabel(label);
-        result = {
-          status: 'ok',
-          message: 'moved to label',
-          messageId: e.parameter.messageId,
-          labelName: e.parameter.labelName
-        };
-        break;
-
       case 'downloadAttachment':
         // gmail_download_attachment に対応
         if (!e.parameter.messageId) throw new Error("messageId parameter is required");
