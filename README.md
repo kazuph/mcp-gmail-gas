@@ -111,9 +111,6 @@ Add the following to your MCP client's configuration:
 
 - `gmail_search_messages`: Search for emails using Gmail search query syntax (e.g., "subject:Meeting newer_than:1d")
 - `gmail_get_message`: Get the full content and details of a specific email
-- `gmail_mark_read`: Mark a specific email as read
-- `gmail_mark_unread`: Mark a specific email as unread
-- `gmail_move_to_label`: Move a specific email to a Gmail label
 - `gmail_download_attachment`: Download an attachment from a specific email
 
 ## Security Note
