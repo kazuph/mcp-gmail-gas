@@ -3,6 +3,7 @@
 Model Context Protocol server for Gmail integration. This allows Claude Desktop (or any MCP client) to interact with your Gmail account through Google Apps Script.
 
 <a href="https://glama.ai/mcp/servers/7awla69pjq"><img width="380" height="200" src="https://glama.ai/mcp/servers/7awla69pjq/badge" alt="@kazuph/mcp-gmail-gas MCP server" /></a>
+[![smithery badge](https://smithery.ai/badge/@kazuph/mcp-gmail-gas)](https://smithery.ai/server/@kazuph/mcp-gmail-gas)
 
 ## Quick Start (For Users)
 
@@ -70,8 +71,15 @@ Note: Replace `YOUR_DEPLOYMENT_URL` and `YOUR_API_KEY` with your actual values.
 - Claude Desktop (install from https://claude.ai/desktop)
 - tsx (install via `npm install -g tsx`)
 
-### Installation
+### Installing via Smithery
 
+To install Gmail GAS for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@kazuph/mcp-gmail-gas):
+
+```bash
+npx -y @smithery/cli install @kazuph/mcp-gmail-gas --client claude
+```
+
+### Installation
 ```bash
 git clone https://github.com/kazuph/mcp-gmail-gas.git
 cd mcp-gmail-gas
