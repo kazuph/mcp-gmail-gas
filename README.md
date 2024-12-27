@@ -2,6 +2,8 @@
 
 Model Context Protocol server for Gmail integration. This allows Claude Desktop (or any MCP client) to interact with your Gmail account through Google Apps Script.
 
+<a href="https://glama.ai/mcp/servers/7awla69pjq"><img width="380" height="200" src="https://glama.ai/mcp/servers/7awla69pjq/badge" alt="@kazuph/mcp-gmail-gas MCP server" /></a>
+
 ## Quick Start (For Users)
 
 ### Prerequisites
